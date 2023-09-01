@@ -1,32 +1,31 @@
 package org.saparov.task;
 
+import java.util.concurrent.CompletableFuture;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
 
-        Thread threadA = new Thread(() -> {
-            foo.first();
+        CompletableFuture.runAsync(() -> {
+            foo.first(new Thread());
         });
 
-        Thread threadB = new Thread(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
-                foo.second();
+                foo.second(new Thread());
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
             }
         });
 
-        Thread threadC = new Thread(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
-                foo.third();
+                foo.third(new Thread());
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
             }
         });
 
-
-        threadC.start();
-        threadA.start();
-        threadB.start();
+        Thread.sleep(2000);
     }
 }

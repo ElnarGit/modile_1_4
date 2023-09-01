@@ -11,18 +11,18 @@ public class Foo {
         this.countDownLatch2 = new CountDownLatch(1);
     }
 
-    public void first(){
+    public void first(Runnable runnable){
         System.out.print("first");
         countDownLatch1.countDown();
     }
 
-    public void second() throws InterruptedException {
+    public void second(Runnable runnable) throws InterruptedException {
         countDownLatch1.await();
         System.out.print("second");
         countDownLatch2.countDown();
     }
 
-    public void third() throws InterruptedException {
+    public void third(Runnable runnable) throws InterruptedException {
         countDownLatch2.await();
         System.out.print("third");
     }
